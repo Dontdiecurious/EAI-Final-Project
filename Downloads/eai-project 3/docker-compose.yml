@@ -1,0 +1,64 @@
+services:
+  user-service:
+    build: ./user-service
+    ports:
+      - "4001:4000"
+    depends_on:
+      - db-user
+    networks:
+      - eai-network
+
+  product-service:
+    build: ./product-service
+    ports:
+      - "4002:4000"
+    depends_on:
+      - db-product
+    networks:
+      - eai-network
+
+  order-service:
+    build: ./order-service
+    ports:
+      - "4003:4000"
+    depends_on:
+      - db-order
+    networks:
+      - eai-network
+
+  db-user:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: user_db
+    ports:
+      - "5433:5432"
+    networks:
+      - eai-network
+
+  db-product:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: product_db
+    ports:
+      - "5434:5432"
+    networks:
+      - eai-network
+
+  db-order:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: order_db
+    ports:
+      - "5435:5432"
+    networks:
+      - eai-network
+
+networks:
+  eai-network:
+    driver: bridge
